@@ -15,11 +15,16 @@ export default class UserController {
     return await this._userService.randomlyPickOneUser();
   }
 
-  async upvote(userId: number, commentId: number): Promise<void> {
-    await this._upvoteService.upvote(userId, commentId);
+  async upvote(param: { userId: number; commentId: number }): Promise<number> {
+    await this._upvoteService.upvote(param.userId, param.commentId);
+    return param.userId;
   }
 
-  async downvote(userId: number, commentId: number): Promise<void> {
-    await this._upvoteService.downvote(userId, commentId);
+  async downvote(param: {
+    userId: number;
+    commentId: number;
+  }): Promise<number> {
+    await this._upvoteService.downvote(param.userId, param.commentId);
+    return param.userId;
   }
 }

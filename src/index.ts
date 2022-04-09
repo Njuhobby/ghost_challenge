@@ -12,6 +12,7 @@ import _ from "lodash";
 import cors from "cors";
 
 const app = express();
+app.use(express.json());
 const port = 5000; // default port to listen
 
 (async () => {
@@ -42,9 +43,10 @@ const port = 5000; // default port to listen
       if (!controller)
         throw new Error(`controller ${controllerName} not found`);
 
-      const result = req.body
-        ? await controller[methodName](...req.body.params)
-        : await controller[methodName]();
+      const result =
+        Object.keys(req.body).length > 0
+          ? await controller[methodName](req.body)
+          : await controller[methodName]();
       res.json(result);
     } catch (e) {
       next(e);

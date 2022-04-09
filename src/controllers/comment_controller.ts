@@ -9,22 +9,25 @@ export default class CommentController {
     this._commentService = container.get<CommentService>(CommentService);
   }
 
-  async createComment(
-    content: string,
-    authorId: number,
-    parentId?: number
-  ): Promise<number> {
+  async createComment(param: {
+    content: string;
+    authorId: number;
+    parentId?: number;
+  }): Promise<number> {
     return await this._commentService.createComment(
-      authorId,
-      content,
-      parentId
+      param.authorId,
+      param.content,
+      param.parentId
     );
   }
 
-  async getComments(
-    userId: number,
-    onlyRootComments: boolean
-  ): Promise<CommentDto[]> {
-    return await this._commentService.getComments(userId, onlyRootComments);
+  async getComments(param: {
+    userId: number;
+    onlyRootComments: boolean;
+  }): Promise<CommentDto[]> {
+    return await this._commentService.getComments(
+      param.userId,
+      param.onlyRootComments
+    );
   }
 }

@@ -10,11 +10,11 @@ describe("comment_controller", () => {
     it("should create comment successfully", async () => {
       const em = getManager();
       const controller = new CommentController();
-      const newCommentId = await controller.createComment(
-        "test comment",
-        1,
-        null
-      );
+      const newCommentId = await controller.createComment({
+        content: "test comment",
+        authorId: 1,
+        parentId: null,
+      });
       const newComment = await em.findOneById(Comment, newCommentId);
       expect(newComment).toMatchObject({
         id: newCommentId,
@@ -28,7 +28,10 @@ describe("comment_controller", () => {
     transactionHook();
     it("should get all root comments", async () => {
       const controller = new CommentController();
-      const rootComments = await controller.getComments(1, true);
+      const rootComments = await controller.getComments({
+        userId: 1,
+        onlyRootComments: true,
+      });
       expect(rootComments).toHaveLength(3);
     });
   });

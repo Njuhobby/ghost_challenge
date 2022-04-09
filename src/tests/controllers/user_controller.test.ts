@@ -20,17 +20,23 @@ describe("user_controller", () => {
     const em = getManager();
     const controller = new UserController();
     it("should upvote successfully", async () => {
-      await controller.upvote(0, 0);
+      await controller.upvote({
+        userId: 1,
+        commentId: 1,
+      });
       const upvote = await em.findOne(Upvote, {
-        where: { commentId: 0, userId: 0 },
+        where: { commentId: 1, userId: 1 },
       });
       expect(upvote).not.toBeNull();
     });
 
     it("should downvote successfully", async () => {
-      await controller.downvote(0, 0);
+      await controller.downvote({
+        userId: 1,
+        commentId: 1,
+      });
       const upvote = await em.findOne(Upvote, {
-        where: { commentId: 0, userId: 0 },
+        where: { commentId: 1, userId: 1 },
       });
       expect(upvote).toBeNull();
     });
