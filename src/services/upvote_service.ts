@@ -5,10 +5,15 @@ import { injectable } from "inversify";
 @injectable()
 export default class UpvoteService {
   async upvote(userId: number, commentId: number): Promise<number> {
+    const em = getManager();
+    const existing = await em.findOne(Upvote, {
+      where: { commentId: commentId, userId: userId },
+    });
+    if (existing) return existing.id;
     const upvote = new Upvote();
     upvote.commentId = commentId;
     upvote.userId = userId;
-    await getManager().save(Upvote, upvote);
+    await em.save(Upvote, upvote);
     return upvote.id;
   }
 
