@@ -1,11 +1,12 @@
 import Upvote from "../models/upvote";
+import { getManager } from "typeorm";
 
 export default class UpvoteService {
   async upvote(userId: number, commentId: number): Promise<number> {
     const upvote = new Upvote();
     upvote.commentId = commentId;
     upvote.userId = userId;
-    await upvote.save();
+    await getManager().save(Upvote, upvote);
     return upvote.id;
   }
 
@@ -13,6 +14,6 @@ export default class UpvoteService {
     const upvote = await Upvote.getRepository().findOne({
       where: { userId, commentId },
     });
-    if (upvote !== null) await Upvote.getRepository().remove(upvote);
+    if (upvote !== null) await getManager().remove(upvote);
   }
 }

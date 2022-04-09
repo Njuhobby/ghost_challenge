@@ -15,7 +15,7 @@ export default class CommentService {
     comment.authorId = authorId;
     comment.content = content;
     if (parentId) comment.parentId = parentId;
-    await comment.save();
+    await getManager().save(Comment, comment);
     return comment.id;
   }
 
