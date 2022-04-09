@@ -1,17 +1,17 @@
 import Upvote from "../models/upvote";
 
 export default class UpvoteService {
-  async upvote(user_id: number, comment_id: number): Promise<number> {
+  async upvote(userId: number, commentId: number): Promise<number> {
     const upvote = new Upvote();
-    upvote.comment_id = comment_id;
-    upvote.user_id = user_id;
+    upvote.commentId = commentId;
+    upvote.userId = userId;
     await upvote.save();
     return upvote.id;
   }
 
-  async downvote(user_id: number, comment_id: number): Promise<void> {
+  async downvote(userId: number, commentId: number): Promise<void> {
     const upvote = await Upvote.getRepository().findOne({
-      where: { user_id: user_id, comment_id: comment_id },
+      where: { userId, commentId },
     });
     if (upvote !== null) await Upvote.getRepository().remove(upvote);
   }

@@ -1,23 +1,20 @@
 import Comment from "../models/comment";
 import { getManager } from "typeorm";
 import _ from "lodash";
+import { injectable } from "inversify";
+import { CommentDto } from "../dtos/comment_related_dtos";
 
-export class CommentDto {
-  id: number;
-  content: string;
-  descents: CommentDto[];
-}
-
+@injectable()
 export default class CommentService {
   async createComment(
-    author_id: number,
+    authorId: number,
     content: string,
-    parent_id?: number
+    parentId?: number
   ): Promise<number> {
     const comment = new Comment();
-    comment.author_id = author_id;
+    comment.authorId = authorId;
     comment.content = content;
-    if (parent_id) comment.parent_id = parent_id;
+    if (parentId) comment.parentId = parentId;
     await comment.save();
     return comment.id;
   }
@@ -25,10 +22,10 @@ export default class CommentService {
   async getComments(onlyRootComments = true): Promise<CommentDto[]> {
     if (onlyRootComments) {
       const comments = await getManager().find(Comment, {
-        where: { parent_id: null },
+        where: { parentId: null },
       });
       return _.orderBy(comments, (x) => {
-        x.create_time.getTime();
+        x.createTime.getTime();
       }).map((x) => ({
         id: x.id,
         descents: [],

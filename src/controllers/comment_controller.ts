@@ -1,18 +1,24 @@
 import { CommentService } from "../services";
-import { CommentDto } from "../services/comment_service";
+import { CommentDto } from "../dtos/comment_related_dtos";
+import { inject } from "inversify";
 
 export default class CommentController {
+  @inject(CommentService)
+  private _commentService: CommentService;
+
   async createComment(
     content: string,
-    author_id: number,
-    parent_id?: number
+    authorId: number,
+    parentId?: number
   ): Promise<number> {
-    const commentService = new CommentService();
-    return await commentService.createComment(author_id, content, parent_id);
+    return await this._commentService.createComment(
+      authorId,
+      content,
+      parentId
+    );
   }
 
   async getComments(onlyRootComments: boolean): Promise<CommentDto[]> {
-    const commentService = new CommentService();
-    return await commentService.getComments(onlyRootComments);
+    return await this._commentService.getComments(onlyRootComments);
   }
 }
