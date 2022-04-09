@@ -8,11 +8,11 @@ export default class Upvote extends BaseEntity {
   @Column("integer", {
     name: "comment_id",
   })
-  comment_id: number | null;
+  commentId: number | null;
 
   @Column("integer", {
     name: "user_id",
     nullable: false,
   })
-  user_id: number;
+  userId: number;
 }

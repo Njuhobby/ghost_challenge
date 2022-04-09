@@ -8,9 +8,9 @@ export default class Comment extends BaseEntity {
   @Column("integer", {
     name: "parent_id",
   })
-  parent_id: number;
+  parentId: number;
 
-  @Column("character varying", {
+  @Column("varchar", {
     name: "content",
     nullable: false,
   })
@@ -20,11 +20,11 @@ export default class Comment extends BaseEntity {
     name: "author_id",
     nullable: false,
   })
-  author_id: number;
+  authorId: number;
 
   @Column("timestamp with time zone", {
     name: "create_time",
     nullable: false,
   })
-  create_time: Date;
+  createTime: Date;
 }

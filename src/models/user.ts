@@ -5,15 +5,15 @@ export default class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("varying character", {
+  @Column("varchar", {
     name: "name",
     nullable: false,
   })
   name: string;
 
-  @Column("varying character", {
+  @Column("varchar", {
     name: "avatar_path",
     nullable: false,
   })
-  avatar_path: string;
+  avatarPath: string;
 }

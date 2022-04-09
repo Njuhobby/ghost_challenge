@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS migrate_log (
+    "filename" VARCHAR,
+    "execute_time" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY ("filename")
+);
