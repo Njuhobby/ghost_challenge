@@ -1,6 +1,8 @@
 import Upvote from "../models/upvote";
 import { getManager } from "typeorm";
+import { injectable } from "inversify";
 
+@injectable()
 export default class UpvoteService {
   async upvote(userId: number, commentId: number): Promise<number> {
     const upvote = new Upvote();

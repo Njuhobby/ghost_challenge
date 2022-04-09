@@ -1,10 +1,13 @@
 import { CommentService } from "../services";
 import { CommentDto } from "../dtos/comment_related_dtos";
-import { inject } from "inversify";
+import container from "../ioc/inversify.config";
 
 export default class CommentController {
-  @inject(CommentService)
   private _commentService: CommentService;
+
+  constructor() {
+    this._commentService = container.get<CommentService>(CommentService);
+  }
 
   async createComment(
     content: string,
@@ -18,7 +21,10 @@ export default class CommentController {
     );
   }
 
-  async getComments(onlyRootComments: boolean): Promise<CommentDto[]> {
-    return await this._commentService.getComments(onlyRootComments);
+  async getComments(
+    userId: number,
+    onlyRootComments: boolean
+  ): Promise<CommentDto[]> {
+    return await this._commentService.getComments(userId, onlyRootComments);
   }
 }

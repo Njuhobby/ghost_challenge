@@ -9,7 +9,7 @@ module.exports = async () => {
   console.log(
     "-----------  setup jest, register global db connection  -----------------"
   );
-  process.env["TZ"] = "utc";
+  process.env.TZ = "utc";
   await createConnection({
     type: "postgres",
     url: process.env.TEST_PG_URL,

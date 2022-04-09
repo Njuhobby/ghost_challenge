@@ -12,7 +12,7 @@ describe("comment_controller", () => {
       const controller = new CommentController();
       const newCommentId = await controller.createComment(
         "test comment",
-        0,
+        1,
         null
       );
       const newComment = await em.findOneById(Comment, newCommentId);
@@ -28,7 +28,7 @@ describe("comment_controller", () => {
     transactionHook();
     it("should get all root comments", async () => {
       const controller = new CommentController();
-      const rootComments = await controller.getComments(true);
+      const rootComments = await controller.getComments(1, true);
       expect(rootComments).toHaveLength(3);
     });
   });

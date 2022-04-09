@@ -1,13 +1,15 @@
 import { UpvoteService, UserService } from "../services";
 import User from "../models/user";
-import { inject } from "inversify";
+import container from "../ioc/inversify.config";
 
 export default class UserController {
-  @inject(UserService)
   private _userService: UserService;
-
-  @inject(UpvoteService)
   private _upvoteService: UpvoteService;
+
+  constructor() {
+    this._userService = container.get<UserService>(UserService);
+    this._upvoteService = container.get<UpvoteService>(UpvoteService);
+  }
 
   async randomlyPickOneUser(): Promise<User> {
     return await this._userService.randomlyPickOneUser();
