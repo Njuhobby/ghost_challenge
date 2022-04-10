@@ -138,7 +138,7 @@ function App() {
             content={c.content}
             authorName={c.authorName}
             authorAvatarPath={c.authorAvatarPath}
-            createTime={c.createTime}
+            createTimefromNow={c.timeFromNow}
             descents={c.descents}
             upvoted={c.upvoted}
             parentDownvote={downvote}

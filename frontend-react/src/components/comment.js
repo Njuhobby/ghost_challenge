@@ -8,7 +8,7 @@ const Comment = (props) => {
     content,
     authorName,
     authorAvatarPath,
-    createTime,
+    createTimefromNow,
     descents,
     upvoted,
     parentDownvote,
@@ -37,7 +37,7 @@ const Comment = (props) => {
           <div className="comment_author_row d-flex">
             <b>{authorName}</b>
             <div>&bull;</div>
-            <p>45 mins ago</p>
+            <p>{createTimefromNow}</p>
           </div>
           <div className="content_div">{content}</div>
           <div className="upvote_row d-flex">
@@ -64,7 +64,7 @@ const Comment = (props) => {
               content={d.content}
               authorName={d.authorName}
               authorAvatarPath={d.authorAvatarPath}
-              createTime={d.createTime}
+              createTimefromNow={d.timeFromNow}
               descents={d.descents}
               upvoted={d.upvoted}
               parentDownvote={parentDownvote}

@@ -29,7 +29,7 @@
 }
 
 .with_child_comments{
-  border-left: solid 2px grey;
+  border-left: solid 2px lightgrey;
 }
 
 .with_child_comments, .with_no_child_comments{

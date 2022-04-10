@@ -44,7 +44,9 @@ function getComments(userId) {
             comment.authorName +
             "</b>\n" +
             "<div>&bull;</div>\n" +
-            "<p>45 mins ago</p>\n" +
+            "<p>" +
+            comment.timeFromNow +
+            "</p>\n" +
             "</div>\n" +
             '<div class="content_div">\n' +
             comment.content +

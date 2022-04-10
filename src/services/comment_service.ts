@@ -2,6 +2,7 @@ import Comment from "../models/comment";
 import { getManager } from "typeorm";
 import { injectable } from "inversify";
 import { CommentDto } from "../dtos/comment_related_dtos";
+import moment from "moment";
 
 @injectable()
 export default class CommentService {
@@ -13,6 +14,7 @@ export default class CommentService {
     const comment = new Comment();
     comment.authorId = authorId;
     comment.content = content;
+    comment.createTime = new Date();
     if (parentId) comment.parentId = parentId;
     await getManager().save(Comment, comment);
     return comment.id;
@@ -39,6 +41,7 @@ export default class CommentService {
         .leftJoin("upvote", "uv", "uv.comment_id=c.id AND uv.user_id=:userId", {
           userId,
         })
+        .where("c.parent_id IS NULL")
         .orderBy("c.create_time")
         .getRawMany();
       return rawResults.map((r) => ({
@@ -49,6 +52,7 @@ export default class CommentService {
         authorName: r.user_name,
         authorAvatarPath: r.user_avatar_path,
         upvoted: r.upvoted,
+        timeFromNow: moment(r.create_time).fromNow(),
       }));
     } else {
       const rawResults = await getManager()
@@ -102,6 +106,7 @@ export default class CommentService {
               authorAvatarPath: p.user_avatar_path,
               upvoted: p.upvoted,
               descents: [],
+              timeFromNow: moment(p.create_time).fromNow(),
             };
             if (p.child_id) {
               dto.descents.push({
@@ -112,6 +117,7 @@ export default class CommentService {
                 createTime: p.child_create_time,
                 upvoted: p.child_upvoted,
                 descents: [],
+                timeFromNow: moment(p.child_create_time).fromNow(),
               });
             }
             p = dto;
@@ -124,6 +130,7 @@ export default class CommentService {
               authorName: c.child_user_name,
               authorAvatarPath: c.child_avatar_path,
               upvoted: c.child_upvoted,
+              timeFromNow: moment(c.child_create_time).fromNow(),
             });
             return p;
           } else {
@@ -141,6 +148,7 @@ export default class CommentService {
           authorName: reduced.user_name,
           authorAvatarPath: reduced.user_avatar_path,
           descents: [],
+          timeFromNow: moment(reduced.createTime).fromNow(),
         };
         if (reduced.child_id) {
           lastElement.descents.push({
@@ -151,6 +159,7 @@ export default class CommentService {
             descents: [],
             authorName: reduced.child_user_name,
             authorAvatarPath: reduced.child_avatar_path,
+            timeFromNow: moment(reduced.child_create_time).fromNow(),
           });
         }
         results.push(lastElement);
