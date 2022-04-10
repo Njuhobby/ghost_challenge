@@ -35,4 +35,5 @@ VALUES('Robe Hope', '../assets/avatars/avatar_01.png'),
 INSERT INTO "comment" (parent_id, content, author_id, create_time)
 VALUES (null, 'Jeepers now that''s huge release with some big community earnings to back it - it must be so rewarding seeing creators quit their day jobs after monetizing (with real MRR) on the new platform.', 1, '2022-01-01 16:00:00+08'),
 (null, 'Switched our blog from Hubspot to Ghost a year ago -- turned out to be a great decision. Looking forward to this update....the in-platform analytics look especially delicious.:)', 2, '2022-01-02 16:00:00+08'),
-(null, 'Love the native memberships and the zipless themes, I was just asked by a friend about options for a new site, and I think I know what I''ll be recommending then...', 3, '2022-03-01 16:00:00+08');
+(null, 'Love the native memberships and the zipless themes, I was just asked by a friend about options for a new site, and I think I know what I''ll be recommending then...', 3, '2022-03-01 16:00:00+08'),
+(1, 'This is a child comment for the first comment', 8, '2022-04-09 16:00:00+08');

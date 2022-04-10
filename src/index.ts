@@ -84,7 +84,7 @@ const socketIoPort = 8000;
   });
 
   server.listen(socketIoPort, () =>
-    console.log(`Socket.io server Listening on port ${port}`)
+    console.log(`Socket.io server Listening on port ${socketIoPort}`)
   );
 })();
 
