@@ -23,6 +23,7 @@ describe("user_controller", () => {
       await controller.upvote({
         userId: 1,
         commentId: 1,
+        io: null,
       });
       const upvote = await em.findOne(Upvote, {
         where: { commentId: 1, userId: 1 },
@@ -34,6 +35,7 @@ describe("user_controller", () => {
       await controller.downvote({
         userId: 1,
         commentId: 1,
+        io: null,
       });
       const upvote = await em.findOne(Upvote, {
         where: { commentId: 1, userId: 1 },

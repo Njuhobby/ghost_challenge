@@ -4,6 +4,7 @@ import { Container, Form, Image, Button } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import Comment from "./components/comment";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -12,6 +13,27 @@ function App() {
     newComment: "",
     comments: [],
   });
+
+  const socket = socketIOClient("http://localhost:8000");
+
+  const receiveUpvoteMessage = (data) => {
+    if (data.userId === appState.userId) {
+      const copy = { ...appState };
+      let commentInCopy = findComment(data.commentId, copy.comments);
+      commentInCopy.upvoted = data.upvoted;
+      setAppState(copy);
+    }
+  };
+
+  useEffect(() => {
+    socket.on("upvote", (data) => {
+      console.log(
+        `received upvote message, userId: ${data.userId}, commentId: ${data.commentId}, upvoted:${data.upvoted}`
+      );
+      receiveUpvoteMessage(data);
+    });
+    return () => socket.close();
+  }, [socket]);
 
   useEffect(() => {
     axios.post("http://localhost:5000/user/randomlyPickOneUser").then((res) => {
@@ -74,6 +96,7 @@ function App() {
         if (childComment.id === commentId) return childComment;
       }
     }
+    return null;
   };
 
   const upvote = (commentId) => {

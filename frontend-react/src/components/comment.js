@@ -59,6 +59,7 @@ const Comment = (props) => {
         <div className="child_comments_div">
           {descents.map((d) => (
             <Comment
+              key={d.id.toString()}
               id={d.id}
               userId={userId}
               content={d.content}

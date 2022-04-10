@@ -1,4 +1,5 @@
 import express from "express";
+import { Server } from "socket.io";
 import { createConnection } from "typeorm";
 import container from "./ioc/inversify.config";
 import MigrateService from "./services/migrate_service";
@@ -10,10 +11,28 @@ import controllers from "./controllers";
 import "dotenv/config";
 import _ from "lodash";
 import cors from "cors";
+import * as http from "http";
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+  // Whenever someone disconnects this piece of code executed
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+});
+
 app.use(express.json());
 const port = 5000; // default port to listen
+const socketIoPort = 8000;
 
 (async () => {
   // register global db connection
@@ -43,6 +62,12 @@ const port = 5000; // default port to listen
       if (!controller)
         throw new Error(`controller ${controllerName} not found`);
 
+      if (
+        controllerName === "userController" &&
+        (methodName === "upvote" || methodName === "downvote")
+      ) {
+        req.body.io = io;
+      }
       const result =
         Object.keys(req.body).length > 0
           ? await controller[methodName](req.body)
@@ -57,6 +82,10 @@ const port = 5000; // default port to listen
   app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);
   });
+
+  server.listen(socketIoPort, () =>
+    console.log(`Socket.io server Listening on port ${port}`)
+  );
 })();
 
 export default app;
