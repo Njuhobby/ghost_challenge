@@ -1,4 +1,4 @@
-import { connectionHook, transactionHook } from "../jest.utils";
+import { connectionHook } from "../jest.utils";
 import { getManager } from "typeorm";
 import Comment from "../../models/comment";
 import CommentController from "../../controllers/comment_controller";
@@ -6,7 +6,6 @@ import CommentController from "../../controllers/comment_controller";
 describe("comment_controller", () => {
   connectionHook();
   describe("create comment", () => {
-    transactionHook();
     it("should create comment successfully", async () => {
       const em = getManager();
       const controller = new CommentController();
@@ -21,11 +20,11 @@ describe("comment_controller", () => {
         parentId: null,
         content: "test comment",
       });
+      await em.remove(newComment);
     });
   });
 
   describe("get comment", () => {
-    transactionHook();
     it("should get all root comments", async () => {
       const controller = new CommentController();
       const rootComments = await controller.getComments({

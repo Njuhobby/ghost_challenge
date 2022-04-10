@@ -1,28 +1,21 @@
-import * as typeorm from "typeorm";
+import { Connection, createConnection } from "typeorm";
+import User from "../models/user";
+import Comment from "../models/comment";
+import Upvote from "../models/upvote";
+import MigrateLog from "../models/migrate_log";
 
 export function connectionHook(): void {
-  let conn: typeorm.Connection;
+  let conn: Connection;
   beforeAll(async () => {
-    conn = await typeorm.createConnection();
+    conn = await createConnection({
+      type: "postgres",
+      url: process.env.TEST_PG_URL,
+      entities: [User, Comment, Upvote, MigrateLog],
+      name: "default",
+    });
+    console.log(conn.name);
   });
   afterAll(async () => {
-    await conn.close();
+    await conn.destroy();
   });
-}
-
-export function transactionHook(): typeorm.EntityManager {
-  let em: typeorm.EntityManager;
-  beforeAll(async () => {
-    const conn = typeorm.getConnection();
-    const runner = conn.createQueryRunner();
-    em = conn.createEntityManager(runner);
-    await em.queryRunner.startTransaction();
-    jest.spyOn(typeorm, "getManager").mockReturnValue(em);
-  });
-  afterAll(async () => {
-    await em.queryRunner.rollbackTransaction();
-    await em.queryRunner.release();
-    jest.clearAllMocks();
-  });
-  return em;
 }

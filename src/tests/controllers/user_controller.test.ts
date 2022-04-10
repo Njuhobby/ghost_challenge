@@ -1,12 +1,11 @@
-import { connectionHook, transactionHook } from "../jest.utils";
-import { getManager } from "typeorm";
+import { connectionHook } from "../jest.utils";
+import { getManager, EntityManager } from "typeorm";
 import Upvote from "../../models/upvote";
 import UserController from "../../controllers/user_controller";
 
 describe("user_controller", () => {
   connectionHook();
   describe("randomly pick one user", () => {
-    transactionHook();
     it("should return one user", async () => {
       const em = getManager();
       const controller = new UserController();
@@ -16,10 +15,11 @@ describe("user_controller", () => {
   });
 
   describe("upvote", () => {
-    transactionHook();
-    const em = getManager();
-    const controller = new UserController();
+    let em: EntityManager;
+    let controller: UserController;
     it("should upvote successfully", async () => {
+      em = getManager();
+      controller = new UserController();
       await controller.upvote({
         userId: 1,
         commentId: 1,
@@ -32,6 +32,8 @@ describe("user_controller", () => {
     });
 
     it("should downvote successfully", async () => {
+      em = getManager();
+      controller = new UserController();
       await controller.downvote({
         userId: 1,
         commentId: 1,
