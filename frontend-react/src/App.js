@@ -6,6 +6,9 @@ import Comment from "./components/comment";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 
+const socketServer = process.env.REACT_APP_SOCKET_SERVER_ADDRESS;
+const expressServer = process.env.REACT_APP_EXPRESS_SERVER_ADDRESS;
+
 function App() {
   const [appState, setAppState] = useState({
     userId: 0,
@@ -14,7 +17,7 @@ function App() {
     comments: [],
   });
 
-  const socket = socketIOClient("http://localhost:8000");
+  const socket = socketIOClient(socketServer);
 
   const receiveUpvoteMessage = (data) => {
     if (data.userId === appState.userId) {
@@ -36,10 +39,10 @@ function App() {
   }, [socket]);
 
   useEffect(() => {
-    axios.post("http://localhost:5000/user/randomlyPickOneUser").then((res) => {
+    axios.post(`${expressServer}/user/randomlyPickOneUser`).then((res) => {
       const user = res.data;
       axios
-        .post("http://localhost:5000/comment/getComments", {
+        .post(`${expressServer}/comment/getComments`, {
           userId: user.id,
           onlyRootComments: false,
         })
@@ -66,13 +69,13 @@ function App() {
 
   const comment = () => {
     axios
-      .post("http://localhost:5000/comment/createComment", {
+      .post(`${expressServer}/comment/createComment`, {
         content: appState.newComment,
         authorId: appState.userId,
       })
       .then((res) => {
         axios
-          .post("http://localhost:5000/comment/getComments", {
+          .post(`${expressServer}/comment/getComments`, {
             userId: appState.userId,
             onlyRootComments: false,
           })
@@ -101,7 +104,7 @@ function App() {
 
   const upvote = (commentId) => {
     axios
-      .post("http://localhost:5000/user/upvote", {
+      .post(`${expressServer}/user/upvote`, {
         userId: appState.userId,
         commentId: commentId,
       })
@@ -115,7 +118,7 @@ function App() {
 
   const downvote = (commentId) => {
     axios
-      .post("http://localhost:5000/user/downvote", {
+      .post(`${expressServer}/user/downvote`, {
         userId: appState.userId,
         commentId: commentId,
       })
