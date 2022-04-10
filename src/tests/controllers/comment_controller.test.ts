@@ -14,7 +14,9 @@ describe("comment_controller", () => {
         authorId: 1,
         parentId: null,
       });
-      const newComment = await em.findOneById(Comment, newCommentId);
+      const newComment = await em.findOne(Comment, {
+        where: { id: newCommentId },
+      });
       expect(newComment).toMatchObject({
         id: newCommentId,
         parentId: null,

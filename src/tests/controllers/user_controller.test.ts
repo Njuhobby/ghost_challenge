@@ -7,7 +7,6 @@ describe("user_controller", () => {
   connectionHook();
   describe("randomly pick one user", () => {
     it("should return one user", async () => {
-      const em = getManager();
       const controller = new UserController();
       const randomUser = await controller.randomlyPickOneUser();
       expect(randomUser).not.toBeNull();
