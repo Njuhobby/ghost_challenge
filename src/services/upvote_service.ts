@@ -7,7 +7,7 @@ export default class UpvoteService {
   async upvote(userId: number, commentId: number): Promise<number> {
     const em = getManager();
     const existing = await em.findOne(Upvote, {
-      where: { commentId: commentId, userId: userId },
+      where: { commentId, userId },
     });
     if (existing) return existing.id;
     const upvote = new Upvote();

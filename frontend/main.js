@@ -46,7 +46,7 @@ function getComments(userId) {
             "<div>&bull;</div>\n" +
             "<p>45 mins ago</p>\n" +
             "</div>\n" +
-            '<div clsss="content_div">\n' +
+            '<div class="content_div">\n' +
             comment.content +
             "</div>\n" +
             '<div class="upvote_row d-flex">\n' +
